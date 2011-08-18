@@ -19,7 +19,7 @@
         contentView = [theWindow contentView];
 
 	var mapView = [[MKMapView alloc] initWithFrame:[contentView frame]];
-	
+	[mapView setDelegate:self];
     [contentView addSubview:mapView];
 
     [theWindow orderFront:self];
@@ -28,4 +28,51 @@
     //[CPMenu setMenuBarVisible:YES];
 }
 
+-(void)loadedMap:(MKMapView)mapView
+{
+	CPLog.debug("Loaded Map");
+	var annotations = [CPArray array];
+	
+	for (var i=0; i < 100; i++) {
+		var annotation = [[MKAnnotation alloc] init];
+		[annotation setCoordinate:CLLocationCoordinate2DMake(GetRandom(-80,80),GetRandom(-80,80))];
+	 
+	 	[annotations addObject:annotation];
+	};
+	
+	 [mapView addAnnotations:annotations];
+	
+}
+
+-(MKAnnotationView)mapView:(MKMapView)aMapView viewForAnnotation:(MKAnnotation)aAnnotation
+{
+	var annotationView = [aMapView dequeueReusableAnnotationViewWithIdentifier:@"Test"];
+	
+	if(!annotationView)
+	{
+		 annotationView = [[MKAnnotationView alloc] initWithFrame:CGRectMake(0,0,10,10)];
+		[annotationView setBackgroundColor:[CPColor colorWithCalibratedRed:GetRandom(0,255) green:GetRandom(0,255) blue:GetRandom(0,255) alpha:1.0]]
+	}
+	
+	return annotationView;
+}
+
+- (void)mapView:(MKMapView)mapView didSelectAnnotationView:(MKAnnotationView)view
+{
+	var annotation = [view annotation];
+	[mapView removeAnnotation:annotation];
+}
+
+
 @end
+
+function GetRandom( min, max ) {
+	if( min > max ) {
+		return( -1 );
+	}
+	if( min == max ) {
+		return( min );
+	}
+ 
+        return( min + parseInt( Math.random() * ( max-min+1 ) ) );
+}
