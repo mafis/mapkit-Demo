@@ -33,7 +33,7 @@
 	CPLog.debug("Loaded Map");
 	var annotations = [CPArray array];
 	
-	for (var i=0; i < 100; i++) {
+	for (var i=0; i < 500; i++) {
 		var annotation = [[MKAnnotation alloc] init];
 		[annotation setCoordinate:CLLocationCoordinate2DMake(GetRandom(-80,80),GetRandom(-80,80))];
 	 
@@ -50,8 +50,10 @@
 	
 	if(!annotationView)
 	{
-		 annotationView = [[MKAnnotationView alloc] initWithFrame:CGRectMake(0,0,10,10)];
-		[annotationView setBackgroundColor:[CPColor colorWithCalibratedRed:GetRandom(0,255) green:GetRandom(0,255) blue:GetRandom(0,255) alpha:1.0]]
+		 annotationView = [[MKAnnotationView alloc] initWithFrame:CGRectMake(0,0,100,100)];
+		[annotationView setBackgroundColor:[CPColor colorWithCalibratedRed:GetRandom(0,255) green:GetRandom(0,255) blue:GetRandom(0,255) alpha:1.0]];
+		
+		[annotationView setImage: [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"map-marker.gif"]]];
 	}
 	
 	return annotationView;
@@ -59,8 +61,9 @@
 
 - (void)mapView:(MKMapView)mapView didSelectAnnotationView:(MKAnnotationView)view
 {
-	var annotation = [view annotation];
-	[mapView removeAnnotation:annotation];
+	[view removeFromSuperview]
+	//var annotation = [view annotation];
+	//[mapView removeAnnotation:annotation];
 }
 
 
