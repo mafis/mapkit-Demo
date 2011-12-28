@@ -1,3 +1,11 @@
 /Resources/.DS_Store
 /Frameworks/.DS_Store
 /.DS_Store
+Build/
+Frameworks/AppKit
+Frameworks/Debug/**
+Frameworks/Debug/AppKit
+Frameworks/Debug/Foundation
+Frameworks/Debug/Objective-J
+Frameworks/Foundation
+Frameworks/Objective-J

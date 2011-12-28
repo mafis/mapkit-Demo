@@ -11,10 +11,26 @@
 
 @implementation AppController : CPObject
 {
+	var points = 100;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
+	var sharedApplication = [CPApplication sharedApplication];
+		var namedArguments = [sharedApplication namedArguments];
+
+		var enumerator = [namedArguments keyEnumerator];
+		var key;
+		while ((key = [enumerator nextObject]) != nil)
+		{
+			if(key == "points")
+			{
+				points = [namedArguments objectForKey:key];
+				
+			}
+			console.log(key + " = " + points);
+		}
+	
     var theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask],
         contentView = [theWindow contentView];
 
@@ -33,10 +49,10 @@
 	CPLog.debug("Loaded Map");
 	var annotations = [CPArray array];
 	
-	for (var i=0; i < 500; i++) {
+	for (var i=0; i < points; i++) {
 		var annotation = [[MKAnnotation alloc] init];
-		[annotation setCoordinate:CLLocationCoordinate2DMake(GetRandom(-80,80),GetRandom(-80,80))];
-	 
+		[annotation setCoordinate:CLLocationCoordinate2DMake(GetRandom(-85,85),GetRandom(-175,175))];
+	 	[annotation setTitle:@"Test " + i];
 	 	[annotations addObject:annotation];
 	};
 	
@@ -50,10 +66,9 @@
 	
 	if(!annotationView)
 	{
-		 annotationView = [[MKAnnotationView alloc] initWithFrame:CGRectMake(0,0,100,100)];
-		[annotationView setBackgroundColor:[CPColor colorWithCalibratedRed:GetRandom(0,255) green:GetRandom(0,255) blue:GetRandom(0,255) alpha:1.0]];
+		annotationView = [[MKAnnotationView alloc] initWithAnnotation:aAnnotation reuseIdentifer:@"Test"];
 		
-		[annotationView setImage: [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"map-marker.gif"]]];
+		[annotationView setImage: [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"Location_marker.png"]]];
 	}
 	
 	return annotationView;
@@ -61,7 +76,8 @@
 
 - (void)mapView:(MKMapView)mapView didSelectAnnotationView:(MKAnnotationView)view
 {
-	[view removeFromSuperview]
+	CPLog.debug("DidSelectAnnotaitonView");
+	//[view removeFromSuperview]
 	//var annotation = [view annotation];
 	//[mapView removeAnnotation:annotation];
 }
